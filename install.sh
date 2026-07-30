@@ -4,7 +4,7 @@ set -euo pipefail
 OCEAN_REPOSITORY="${OCEAN_REPOSITORY:-emergent-inc/homebrew-tap}"
 OCEAN_VERSION="${OCEAN_VERSION:-}"
 OCEAN_INSTALL_ROOT="${OCEAN_INSTALL_ROOT:-$HOME/Library/Application Support/Ocean}"
-OCEAN_BIN_DIR="${OCEAN_BIN_DIR:-/usr/local/bin}"
+OCEAN_BIN_DIR="${OCEAN_BIN_DIR:-$HOME/.local/bin}"
 OCEAN_APPLE_TEAM_ID="${OCEAN_APPLE_TEAM_ID:-T342J8UQGV}"
 
 usage() {
@@ -110,15 +110,9 @@ if [[ -e "$ocean_temp_dir/node" ]]; then
 fi
 ln -sfn "$ocean_version_dir" "$OCEAN_INSTALL_ROOT/current"
 
-if [[ -d "$OCEAN_BIN_DIR" && -w "$OCEAN_BIN_DIR" ]]; then
-  ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/ocean"
-  ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/orgtrace"
-else
-  printf 'Ocean needs administrator access to add commands to %s.\n' "$OCEAN_BIN_DIR"
-  sudo install -d -m 0755 "$OCEAN_BIN_DIR"
-  sudo ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/ocean"
-  sudo ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/orgtrace"
-fi
+mkdir -p "$OCEAN_BIN_DIR"
+ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/ocean"
+ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/orgtrace"
 
 printf 'Installed Ocean %s.\n' "$OCEAN_VERSION"
 if [[ ":$PATH:" != *":$OCEAN_BIN_DIR:"* ]]; then
