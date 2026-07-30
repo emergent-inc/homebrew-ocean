@@ -12,7 +12,7 @@ usage() {
     "Ocean installer" \
     "" \
     "Environment:" \
-    "  OCEAN_VERSION       Install an exact release (for example, 0.2.0)" \
+    "  OCEAN_VERSION       Install an exact release (for example, 0.2.1)" \
     "  OCEAN_INSTALL_ROOT  Override the versioned installation directory" \
     "  OCEAN_BIN_DIR       Override the command symlink directory"
 }
