@@ -77,12 +77,22 @@ if [[ ! -x "$ocean_temp_dir/ocean" || ! -x "$ocean_temp_dir/rclone" ]]; then
   printf 'Ocean release archive is missing a required executable.\n' >&2
   exit 1
 fi
-codesign --verify --deep --strict "$ocean_temp_dir/ocean"
+ocean_signed_executable="$ocean_temp_dir/ocean"
+if [[ -e "$ocean_temp_dir/node" || -e "$ocean_temp_dir/ocean.mjs" ]]; then
+  if [[ ! -x "$ocean_temp_dir/node" || ! -f "$ocean_temp_dir/ocean.mjs" ]]; then
+    printf 'Ocean runtime archive is incomplete.\n' >&2
+    exit 1
+  fi
+  ocean_signed_executable="$ocean_temp_dir/node"
+fi
+codesign --verify --deep --strict "$ocean_signed_executable"
 codesign --verify --deep --strict "$ocean_temp_dir/rclone"
-spctl --assess --type execute "$ocean_temp_dir/ocean"
-spctl --assess --type execute "$ocean_temp_dir/rclone"
+codesign --verify --verbose=2 -R="notarized" --check-notarization \
+  "$ocean_signed_executable"
+codesign --verify --verbose=2 -R="notarized" --check-notarization \
+  "$ocean_temp_dir/rclone"
 ocean_signed_team="$(
-  codesign --display --verbose=4 "$ocean_temp_dir/ocean" 2>&1 |
+  codesign --display --verbose=4 "$ocean_signed_executable" 2>&1 |
     sed -n 's/^TeamIdentifier=//p'
 )"
 if [[ "$ocean_signed_team" != "$OCEAN_APPLE_TEAM_ID" ]]; then
@@ -94,6 +104,10 @@ ocean_version_dir="$OCEAN_INSTALL_ROOT/versions/$OCEAN_VERSION"
 mkdir -p "$ocean_version_dir"
 install -m 0755 "$ocean_temp_dir/ocean" "$ocean_version_dir/ocean"
 install -m 0755 "$ocean_temp_dir/rclone" "$ocean_version_dir/rclone"
+if [[ -e "$ocean_temp_dir/node" ]]; then
+  install -m 0755 "$ocean_temp_dir/node" "$ocean_version_dir/node"
+  install -m 0644 "$ocean_temp_dir/ocean.mjs" "$ocean_version_dir/ocean.mjs"
+fi
 ln -sfn "$ocean_version_dir" "$OCEAN_INSTALL_ROOT/current"
 
 if [[ -d "$OCEAN_BIN_DIR" && -w "$OCEAN_BIN_DIR" ]]; then
