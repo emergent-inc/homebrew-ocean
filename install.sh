@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OCEAN_REPOSITORY="${OCEAN_REPOSITORY:-emergent-inc/homebrew-ocean}"
+OCEAN_REPOSITORY="${OCEAN_REPOSITORY:-emergent-inc/homebrew-tap}"
 OCEAN_VERSION="${OCEAN_VERSION:-}"
 OCEAN_INSTALL_ROOT="${OCEAN_INSTALL_ROOT:-$HOME/Library/Application Support/Ocean}"
 OCEAN_BIN_DIR="${OCEAN_BIN_DIR:-/usr/local/bin}"
