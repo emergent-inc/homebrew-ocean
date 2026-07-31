@@ -30,6 +30,16 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   printf 'Ocean currently supports macOS 14 or newer.\n' >&2
   exit 1
 fi
+macos_version="$(sw_vers -productVersion 2>/dev/null || true)"
+macos_major="${macos_version%%.*}"
+if [[ ! "$macos_major" =~ ^[0-9]+$ ]]; then
+  printf 'Ocean could not determine the macOS version (found %s).\n' "${macos_version:-unknown}" >&2
+  exit 1
+fi
+if (( macos_major < 14 )); then
+  printf 'Ocean requires macOS 14 or newer (found %s).\n' "${macos_version:-unknown}" >&2
+  exit 1
+fi
 
 case "$(uname -m)" in
   arm64) ocean_arch="arm64" ;;
@@ -117,5 +127,6 @@ ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/orgtrace"
 printf 'Installed Ocean %s.\n' "$OCEAN_VERSION"
 if [[ ":$PATH:" != *":$OCEAN_BIN_DIR:"* ]]; then
   printf 'Ocean is installed at %s/ocean.\n' "$OCEAN_BIN_DIR"
+  printf 'Add it to your shell PATH before future commands:\n  export PATH="%s:$PATH"\n' "$OCEAN_BIN_DIR"
 fi
 exec "$OCEAN_BIN_DIR/ocean" install

@@ -1,15 +1,15 @@
 class Ocean < Formula
   desc "Shared, continuously synced coding-agent session drive"
   homepage "https://github.com/emergent-inc/ocean"
-  version "0.2.5"
+  version "0.2.6"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.5/ocean-darwin-arm64.tar.gz"
-      sha256 "f0d7dcf845e32a037c990aedbdb607e472633e2aaebb387c98fd73fd224f9624"
+      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.6/ocean-darwin-arm64.tar.gz"
+      sha256 "30536c6e173004f727dae0cabcb88d17f7380305b1032268ea3e9a63cfad45b9"
     else
-      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.5/ocean-darwin-x64.tar.gz"
-      sha256 "35661d2f1d92e25c333ea36e7024fd9de07de250b886cfb3975890f9354f203c"
+      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.6/ocean-darwin-x64.tar.gz"
+      sha256 "1aa467d9bfbbe782745a83f6bde8669a1ec2f85a035495053ddb67d0a320be8e"
     end
   end
 
@@ -23,7 +23,8 @@ class Ocean < Formula
   def caveats
     <<~EOS
       Run `ocean install` to authenticate, select a team, start continuous
-      syncing, and mount the read-only team drive at ~/.ocean.
+      syncing, mount the read-only team drive at ~/.ocean, and install Ocean
+      guidance for supported coding agents.
     EOS
   end
 
