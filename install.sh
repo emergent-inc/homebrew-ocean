@@ -6,6 +6,7 @@ OCEAN_VERSION="${OCEAN_VERSION:-}"
 OCEAN_INSTALL_ROOT="${OCEAN_INSTALL_ROOT:-$HOME/Library/Application Support/Ocean}"
 OCEAN_BIN_DIR="${OCEAN_BIN_DIR:-$HOME/.local/bin}"
 OCEAN_APPLE_TEAM_ID="${OCEAN_APPLE_TEAM_ID:-T342J8UQGV}"
+OCEAN_INSTALL_ONLY="${OCEAN_INSTALL_ONLY:-0}"
 
 usage() {
   printf '%s\n' \
@@ -123,10 +124,23 @@ ln -sfn "$ocean_version_dir" "$OCEAN_INSTALL_ROOT/current"
 mkdir -p "$OCEAN_BIN_DIR"
 ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/ocean"
 ln -sfn "$OCEAN_INSTALL_ROOT/current/ocean" "$OCEAN_BIN_DIR/orgtrace"
+ocean_json_root="${OCEAN_INSTALL_ROOT//\\/\\\\}"
+ocean_json_root="${ocean_json_root//\"/\\\"}"
+ocean_json_bin="${OCEAN_BIN_DIR//\\/\\\\}"
+ocean_json_bin="${ocean_json_bin//\"/\\\"}"
+ocean_manifest="$OCEAN_INSTALL_ROOT/installation-manifest.json"
+ocean_manifest_temp="$ocean_manifest.$$"
+printf '{\n  "schemaVersion": 1,\n  "method": "bootstrap",\n  "installRoot": "%s",\n  "binDir": "%s"\n}\n' \
+  "$ocean_json_root" "$ocean_json_bin" > "$ocean_manifest_temp"
+chmod 0600 "$ocean_manifest_temp"
+mv "$ocean_manifest_temp" "$ocean_manifest"
 
 printf 'Installed Ocean %s.\n' "$OCEAN_VERSION"
 if [[ ":$PATH:" != *":$OCEAN_BIN_DIR:"* ]]; then
   printf 'Ocean is installed at %s/ocean.\n' "$OCEAN_BIN_DIR"
   printf 'Add it to your shell PATH before future commands:\n  export PATH="%s:$PATH"\n' "$OCEAN_BIN_DIR"
+fi
+if [[ "$OCEAN_INSTALL_ONLY" == "1" ]]; then
+  exit 0
 fi
 exec "$OCEAN_BIN_DIR/ocean" install

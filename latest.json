@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.9",
+  "publishedAt": "2026-08-01T06:43:11.548Z",
+  "assets": {
+    "arm64": {
+      "url": "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.9/ocean-darwin-arm64.tar.gz",
+      "sha256": "9f62400b7da7a1a3d54f232ba1b72e2d4a4f0707c59ae5a95f6c9044a5cb0142"
+    },
+    "x64": {
+      "url": "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.9/ocean-darwin-x64.tar.gz",
+      "sha256": "7c51d0dc55f65fc0bd0f44d8cb38e6b92d0597795695e4d40bf1ca7f92f788f9"
+    }
+  }
+}
