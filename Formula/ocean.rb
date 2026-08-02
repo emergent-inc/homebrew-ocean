@@ -1,15 +1,15 @@
 class Ocean < Formula
   desc "Shared, continuously synced coding-agent session drive"
   homepage "https://github.com/emergent-inc/ocean"
-  version "0.2.11"
+  version "0.2.12"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.11/ocean-darwin-arm64.tar.gz"
-      sha256 "7d651f4aeb910eacabb29423726448a4d4b7b1344203398f1787de0e50298e64"
+      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.12/ocean-darwin-arm64.tar.gz"
+      sha256 "e003d75067f6d646729b92743a9d8f40806c55cf590c7163171d64d7e0be6b27"
     else
-      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.11/ocean-darwin-x64.tar.gz"
-      sha256 "538b834c065528cd22e579deb61e6338029ffa9dfc29adb4d7ca334612081a92"
+      url "https://github.com/emergent-inc/homebrew-tap/releases/download/v0.2.12/ocean-darwin-x64.tar.gz"
+      sha256 "23aeb7eebf0b61df78f73b4953fca5b450752e296b76a4a258e845be1b49fc4b"
     end
   end
 
