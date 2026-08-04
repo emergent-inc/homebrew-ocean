@@ -150,4 +150,9 @@ fi
 if [[ "$OCEAN_INSTALL_ONLY" == "1" ]]; then
   exit 0
 fi
-exec "$OCEAN_BIN_DIR/ocean" install
+if { : </dev/tty; } 2>/dev/null && { : >/dev/tty; } 2>/dev/null; then
+  exec "$OCEAN_BIN_DIR/ocean" install </dev/tty >/dev/tty
+fi
+printf 'Ocean setup needs an interactive terminal. Run "%s/ocean" install, or use "%s/ocean" install --yes for automation.\n' \
+  "$OCEAN_BIN_DIR" "$OCEAN_BIN_DIR" >&2
+exit 1
